@@ -11,7 +11,17 @@ class GitHubSource {
   private defaultOptions: DefaultOptions = {
     token: null,
     variables: {},
-    graphQLQuery: `query {}`
+    graphQLQuery: `query ($nFirst: Int = 2, $q: String = "") {
+      search(query: $q, type: ISSUE, first: $nFirst){
+        edges{
+          node{
+            ... on PullRequest{
+              title
+            }
+          }
+        }
+      }
+    }`
   };
 
   private url = "https://api.github.com/graphql";
