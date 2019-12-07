@@ -1,0 +1,40 @@
+{
+  "name": "gridsome-source-github-api",
+  "version": "0.1.0",
+  "description": "Gridsome plugin for GitHub v4 API",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lindsaykwardell/gridsome-source-github.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint ./src/index.ts",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "preversion": "npm run lint"
+  },
+  "keywords": [
+    "gridsome",
+    "gridsome-plugin",
+    "github"
+  ],
+  "author": "Lindsay Wardell",
+  "license": "MIT",
+  "dependencies": {
+    "graphql-fetch": "^1.0.1",
+    "gridsome": "^0.7.11"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "jest-fetch-mock": "^2.1.2",
+    "prettier": "^1.16.4",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}
