@@ -33,6 +33,7 @@ class GitHubSource {
     };
 
     if (!token) throw new Error("Missing GitHub API token!");
+    if (graphQLQuery.trim().indexOf("query") !== 0) throw new Error("GitHub API queries must be wrapped in `query{}`.")
 
     api.loadSource(async (actions: any) => {
       const { data } = await this.fetchFromGitHub(
