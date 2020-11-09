@@ -1,5 +1,43 @@
-// @ts-ignore
-import fetcher from "graphql-fetch";
+import 'isomorphic-fetch'
+
+const gql = async (
+  url: string,
+  query: string,
+  variables: { [key: string]: any },
+  options: { [key: string]: any }
+) => {
+  const res = await fetch(url, {
+    ...options,
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
+  });
+
+  if (!res.ok) throw new Error(await res.json());
+
+  const body = await res.json();
+
+  if (body.errors) throw new Error(JSON.stringify(body.errors));
+
+  return body;
+};
+
+const url = "https://api.github.com/graphql";
+
+const fetchFromGitHub = (
+  token: string,
+  graphQLQuery: string,
+  variables: { [key: string]: any }
+) => {
+  return gql(url, graphQLQuery, variables, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 type DefaultOptions = {
   token: string;
@@ -21,7 +59,7 @@ class GitHubSource {
           }
         }
       }
-    }`
+    }`,
   };
 
   private url = "https://api.github.com/graphql";
@@ -29,11 +67,12 @@ class GitHubSource {
   constructor(api: any, options: DefaultOptions) {
     const { token, variables, graphQLQuery } = {
       ...this.defaultOptions,
-      ...options
+      ...options,
     };
 
     if (!token) throw new Error("Missing GitHub API token!");
-    if (graphQLQuery.trim().indexOf("query") !== 0) throw new Error("GitHub API queries must be wrapped in `query{}`.")
+    if (graphQLQuery.trim().indexOf("query") !== 0)
+      throw new Error("GitHub API queries must be wrapped in `query{}`.");
 
     api.loadSource(async (actions: any) => {
       const { data } = await this.fetchFromGitHub(
@@ -50,10 +89,7 @@ class GitHubSource {
     token: string,
     graphQLQuery: string,
     variables: { [key: string]: any }
-  ) => {
-    const fetch = fetcher(this.url);
-    return this.fetchJSON(fetch, token, graphQLQuery, variables);
-  };
+  ) => fetchFromGitHub(token, graphQLQuery, variables);
 
   fetchJSON = async (
     fetch: any,
@@ -66,9 +102,9 @@ class GitHubSource {
     return await fetch(query, variables, {
       headers,
       method: "POST",
-      mode: "cors"
+      mode: "cors",
     });
   };
 }
 
-export = GitHubSource
+export = GitHubSource;

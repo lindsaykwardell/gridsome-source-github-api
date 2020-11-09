@@ -1,6 +1,6 @@
 {
   "name": "gridsome-source-github-api",
-  "version": "0.1.4",
+  "version": "0.2.0-rc1",
   "description": "Gridsome plugin for GitHub v4 API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -23,8 +23,8 @@
   "author": "Lindsay Wardell",
   "license": "MIT",
   "dependencies": {
-    "graphql-fetch": "^1.0.1",
-    "gridsome": "^0.7.13"
+    "gridsome": "^0.7.13",
+    "isomorphic-fetch": "^3.0.0"
   },
   "devDependencies": {
     "jest": "^25.1.0",
